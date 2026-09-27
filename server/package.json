@@ -1,0 +1,28 @@
+{
+	"name": "where-is-rick-server",
+	"private": true,
+	"version": "1.0.0",
+	"type": "module",
+	"scripts": {
+		"dev": "prisma generate && nodemon --exec tsx src/index.js",
+		"start": "tsx src/index.js",
+		"test": "node --test src/services/guessValidation.test.js",
+		"db:generate": "prisma generate",
+		"db:migrate": "prisma migrate dev",
+		"db:deploy": "prisma migrate deploy",
+		"db:seed": "prisma generate && tsx prisma/seed.js"
+	},
+	"dependencies": {
+		"@prisma/adapter-pg": "^7.0.0",
+		"@prisma/client": "^7.0.0",
+		"cors": "^2.8.5",
+		"dotenv": "^16.6.1",
+		"express": "^5.1.0",
+		"pg": "^8.16.3"
+	},
+	"devDependencies": {
+		"nodemon": "^3.1.10",
+		"prisma": "^7.0.0",
+		"tsx": "^4.20.5"
+	}
+}

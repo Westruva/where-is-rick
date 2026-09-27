@@ -1,0 +1,54 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Character {
+  id        Int               @id @default(autoincrement())
+  name      String
+  sceneId   Int               @default(1)
+  x         Float
+  y         Float
+  xMin      Float?
+  yMin      Float?
+  xMax      Float?
+  yMax      Float?
+  discoveries FoundCharacter[]
+
+  @@unique([name, sceneId])
+}
+
+model GameSession {
+  id              String            @id @default(uuid())
+  playerName      String?
+  sceneId         Int               @default(1)
+  startedAt       DateTime          @default(now())
+  endedAt         DateTime?
+  discoveries     FoundCharacter[]
+  leaderboardEntry LeaderboardEntry?
+}
+
+model FoundCharacter {
+  gameSessionId String
+  characterId   Int
+  foundAt       DateTime   @default(now())
+  gameSession   GameSession @relation(fields: [gameSessionId], references: [id], onDelete: Cascade)
+  character     Character   @relation(fields: [characterId], references: [id], onDelete: Cascade)
+
+  @@id([gameSessionId, characterId])
+}
+
+model LeaderboardEntry {
+  id               Int         @id @default(autoincrement())
+  gameSessionId    String      @unique
+  playerName       String
+  elapsedSeconds   Int
+  completedAt      DateTime    @default(now())
+  gameSession      GameSession @relation(fields: [gameSessionId], references: [id], onDelete: Cascade)
+
+  @@index([elapsedSeconds, completedAt])
+}
