@@ -1,7 +1,6 @@
-const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL || "").replace(
-	/\/+$/,
-	"",
-);
+const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL || "")
+	.replace(/\/+$/, "")
+	.replace(/\/api$/i, "");
 
 export async function requestJson(path, options = {}) {
 	const response = await fetch(`${API_BASE_URL}${path}`, {
@@ -11,6 +10,12 @@ export async function requestJson(path, options = {}) {
 			...options.headers,
 		},
 	});
+	const contentType = response.headers.get("content-type") || "";
+	if (!contentType.includes("application/json")) {
+		throw new Error(
+			`The game API returned a non-JSON response (${response.status}). Check VITE_API_BASE_URL.`,
+		);
+	}
 	const data = await response.json();
 
 	if (!response.ok) {

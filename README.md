@@ -41,7 +41,7 @@ Railway provides `PORT` automatically. After the first deploy, seed the characte
 ### Netlify frontend
 
 1. Import the same repository into Netlify. The checked-in `netlify.toml` builds from the repository root and publishes `client/dist`.
-2. Set the Netlify environment variable `VITE_API_BASE_URL` to the Railway service's public URL, for example `https://your-api.up.railway.app` (no trailing slash).
+2. Set the Netlify environment variable `VITE_API_BASE_URL` to the Railway service origin, for example `https://your-api.up.railway.app` (no trailing slash and no `/api` suffix).
 3. Trigger a deploy. The frontend build embeds this public API URL; redeploy Netlify after changing it.
 
 Check the Railway API at `/api/health` if the Netlify page loads but game requests fail. Make sure `CORS_ORIGINS` exactly matches the deployed Netlify origin.

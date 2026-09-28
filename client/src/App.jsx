@@ -226,7 +226,8 @@ export default function App() {
 							{session ? "Hunt in progress" : "Ready when you are"}
 						</span>
 						<span>
-							{foundIds.length}/{characters.length || 1} found
+							{foundIds.length}/
+							{characters.length || selectedScene.characterCount} found
 						</span>
 					</div>
 				</div>
@@ -241,7 +242,8 @@ export default function App() {
 								<h2 id="search-title">Find Rick</h2>
 							</div>
 							<span className="count-badge">
-								{foundIds.length}/{characters.length || 1}
+								{foundIds.length}/
+								{characters.length || selectedScene.characterCount}
 							</span>
 						</div>
 
