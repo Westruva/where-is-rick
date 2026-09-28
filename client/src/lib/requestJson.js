@@ -1,4 +1,9 @@
-const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL || "")
+const configuredApiUrl = (import.meta.env.VITE_API_BASE_URL || "").trim();
+const API_BASE_URL = (
+	configuredApiUrl && !/^https?:\/\//i.test(configuredApiUrl)
+		? `https://${configuredApiUrl}`
+		: configuredApiUrl
+)
 	.replace(/\/+$/, "")
 	.replace(/\/api$/i, "");
 
