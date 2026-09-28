@@ -29,7 +29,7 @@ The frontend is a Netlify static site and the Express API runs as a Railway serv
 
 1. Create a Railway project from this repository and add a PostgreSQL service.
 2. Create a Railway service from the repository. Keep its root directory at the repository root so npm workspaces are available.
-3. Set the service build command to `npm run db:generate` and the start command to `npm run start --workspace server`.
+3. Set the service build command to `npm run db:generate` and the start command to `npm start`. The root start script delegates to the Express server workspace.
 4. Set the service pre-deploy command to `npm run db:deploy` so pending migrations are applied before each deploy.
 5. Set these service variables:
    - `DATABASE_URL`: reference Railway PostgreSQL's `DATABASE_URL` variable.
