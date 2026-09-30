@@ -2,6 +2,21 @@
 
 A playable hidden-character game with a React/JSX client, an Express API, and PostgreSQL through Prisma ORM.
 
+## How the App Works
+
+Players choose one of three illustrated scenes and start a hunt without entering a name. Each scene has its own character roster: Scene 1 has Rick, Morty, and Summer; Scene 2 has Rick and Morty; Scene 3 has Rick, Morty, and Summer.
+
+Clicking the board opens a picker for the characters not yet found. The browser sends the click as normalized image coordinates (`x` and `y` from `0` to `1`), so detection is relative to the displayed image size. The Express API checks the selected character against that scene's stored bounds or hit radius; it never trusts a client-side “found” result. Correct guesses are recorded in PostgreSQL, and the timer stops when all characters in the scene are found.
+
+After completion, a modal asks for a name only if the player wants to save their time. The API verifies that the session is complete before creating a leaderboard entry. Players can abandon a round at any time by choosing another scene; the client clears the current progress and closes the old session.
+
+### Runtime Layout
+
+- **Netlify frontend:** serves the React/Vite app and the scene and portrait images from `client/public`.
+- **Railway API:** runs Express routes for game sessions, guesses, quitting, scores, and leaderboard reads.
+- **Railway PostgreSQL:** stores characters and their scene-relative hit regions, game sessions, discoveries, and leaderboard entries through Prisma.
+- **Configuration:** the Netlify build uses `VITE_API_BASE_URL` to reach Railway. Railway limits browser requests with `CORS_ORIGINS`.
+
 ## Requirements
 
 - Node.js 20.19 or newer
@@ -45,3 +60,7 @@ Railway provides `PORT` automatically. After the first deploy, seed the characte
 3. Trigger a deploy. The frontend build embeds this public API URL; redeploy Netlify after changing it.
 
 Check the Railway API at `/api/health` if the Netlify page loads but game requests fail. Make sure `CORS_ORIGINS` exactly matches the deployed Netlify origin.
+
+![App dashboard image](./Screenshot_2026-09-30_17_01_07.png)
+
+Play the game at https://dancing-gelato-c7d67f.netlify.app/
